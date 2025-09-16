@@ -1,11 +1,252 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Meoximang</h1>
-</body>
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Đăng nhập</title>
+    <meta name="description" content="Trang đăng nhập thiết kế hiện đại, responsive, hỗ trợ dark mode." />
+    <style>
+      :root {
+        --bg: linear-gradient(120deg, #0ea5e9 0%, #6366f1 50%, #a855f7 100%);
+        --card-bg: rgba(255, 255, 255, 0.08);
+        --card-border: rgba(255, 255, 255, 0.16);
+        --text: #0f172a;
+        --muted: #475569;
+        --focus: #22d3ee;
+        --error: #ef4444;
+        --success: #10b981;
+        --shadow: 0 10px 30px rgba(2, 6, 23, 0.2);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --text: #e5e7eb;
+          --muted: #94a3b8;
+        }
+      }
+
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        color: var(--text);
+        background: var(--bg) fixed;
+        background-size: 200% 200%;
+        animation: bgShift 12s ease-in-out infinite;
+      }
+      @keyframes bgShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+      .wrap {
+        min-height: 100svh;
+        display: grid;
+        place-items: center;
+        padding: 2rem;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 420px;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 1.25rem;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .head {
+        padding: 1.25rem 1.25rem 0.75rem 1.25rem;
+      }
+      .brand {
+        display: flex; align-items: center; gap: 0.6rem;
+        font-weight: 700; letter-spacing: 0.3px;
+      }
+      .brand-badge {
+        inline-size: 36px; block-size: 36px; border-radius: 10px;
+        background: #fff; display: grid; place-items: center;
+        box-shadow: 0 8px 20px rgba(14,165,233,0.3);
+      }
+      .brand-badge svg { width: 22px; height: 22px; }
+
+      .body { padding: 1.25rem; }
+
+      h1 {
+        font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+        margin: 0 0 0.25rem;
+      }
+      p.sub {
+        margin: 0 0 1rem;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      form { display: grid; gap: 0.9rem; }
+      .field { display: grid; gap: 0.35rem; }
+      label { font-size: 0.9rem; }
+
+      .input {
+        display: grid; grid-template-columns: 1fr auto; align-items: center;
+        border: 1px solid var(--card-border);
+        background: rgba(255,255,255,0.6);
+        border-radius: 0.9rem; overflow: hidden;
+      }
+      @media (prefers-color-scheme: dark) {
+        .input { background: rgba(2,6,23,0.4); }
+      }
+      .input input {
+        width: 100%; border: 0; outline: 0; background: transparent;
+        padding: 0.9rem 1rem; font-size: 1rem; color: inherit;
+      }
+      .input button.icon {
+        border: 0; background: transparent; padding: 0 0.8rem; cursor: pointer;
+        height: 100%; display: grid; place-items: center;
+      }
+      .hint { color: var(--muted); font-size: 0.85rem; }
+      .error { color: var(--error); font-size: 0.85rem; display: none; }
+
+      .row { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+      .checkbox { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
+      .checkbox input { width: 16px; height: 16px; accent-color: #22d3ee; }
+      .link { color: #22d3ee; text-decoration: none; font-size: 0.9rem; }
+      .link:hover { text-decoration: underline; }
+
+      .btn {
+        border: 0; cursor: pointer; font-weight: 600; letter-spacing: .3px;
+        padding: 0.9rem 1rem; border-radius: 0.9rem; width: 100%;
+        background: linear-gradient(90deg,#22d3ee,#60a5fa,#a78bfa);
+        color: white; box-shadow: 0 10px 20px rgba(99,102,241,0.35);
+        transition: transform .08s ease, filter .15s ease;
+      }
+      .btn:hover { filter: brightness(1.08); }
+      .btn:active { transform: translateY(1px); }
+
+      .or { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: .75rem; color: var(--muted); font-size: .9rem; }
+      .or::before, .or::after { content: ""; height: 1px; background: var(--card-border); }
+
+      .oauth { display: grid; gap: 0.6rem; }
+      .oauth button { width: 100%; border-radius: 0.8rem; padding: 0.75rem 1rem; border: 1px solid var(--card-border); background: rgba(255,255,255,0.65); cursor: pointer; }
+      @media (prefers-color-scheme: dark) { .oauth button { background: rgba(2,6,23,0.4); color: var(--text);} }
+
+      .foot { padding: 0.75rem 1.25rem 1.25rem; color: var(--muted); font-size: 0.9rem; }
+      .foot a { color: #22d3ee; text-decoration: none; }
+      .foot a:hover { text-decoration: underline; }
+
+      /* Focus styles for accessibility */
+      :where(input, a, button):focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 8px; }
+
+      /* Validation */
+      input:user-invalid { box-shadow: none; }
+      .input:has(input:user-invalid) { border-color: var(--error); }
+      .input:has(input:user-valid) { border-color: rgba(16,185,129,0.6); }
+
+      /* Small screens safe area */
+      @supports (padding: max(0px)) {
+        .wrap { padding: max(2rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-left)) max(2rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-right)); }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <section class="card" role="form" aria-labelledby="login-title">
+        <header class="head">
+          <div class="brand">
+            <span class="brand-badge" aria-hidden="true">
+              <!-- Simple spark icon -->
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M12 2l1.8 5.5L19 9l-5.2 1.5L12 16l-1.8-5.5L5 9l5.2-1.5L12 2z" stroke="#0ea5e9" stroke-width="1.5"/>
+              </svg>
+            </span>
+            <span>Acme</span>
+          </div>
+        </header>
+        <div class="body">
+          <h1 id="login-title">Đăng nhập</h1>
+          <p class="sub">Chào mừng trở lại! Vui lòng đăng nhập để tiếp tục.</p>
+
+          <form id="login-form" action="#" method="post" novalidate>
+            <div class="field">
+              <label for="email">Email</label>
+              <div class="input">
+                <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required aria-describedby="email-hint" />
+              </div>
+              <div id="email-hint" class="hint">Nhập email hợp lệ.</div>
+              <div class="error" id="email-error" role="alert">Email không hợp lệ.</div>
+            </div>
+
+            <div class="field">
+              <label for="password">Mật khẩu</label>
+              <div class="input">
+                <input id="password" name="password" type="password" placeholder="••••••••" autocomplete="current-password" minlength="6" required aria-describedby="pwd-hint" />
+                <button class="icon" type="button" id="togglePwd" aria-label="Hiện/ẩn mật khẩu" title="Hiện/ẩn mật khẩu">
+                  <svg id="eye" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+              <div id="pwd-hint" class="hint">Tối thiểu 6 ký tự.</div>
+              <div class="error" id="pwd-error" role="alert">Mật khẩu quá ngắn.</div>
+            </div>
+
+            <div class="row">
+              <label class="checkbox">
+                <input type="checkbox" id="remember" name="remember" />
+                Ghi nhớ tôi
+              </label>
+              <a href="#" class="link">Quên mật khẩu?</a>
+            </div>
+
+            <button class="btn" type="submit">Đăng nhập</button>
+
+            <div class="or" aria-hidden="true">hoặc</div>
+
+            <div class="oauth">
+              <button type="button" aria-label="Đăng nhập với Google">Tiếp tục với Google</button>
+              <button type="button" aria-label="Đăng nhập với Facebook">Tiếp tục với Facebook</button>
+            </div>
+
+            <div class="hint" id="form-msg" role="status" aria-live="polite" style="margin-top: .5rem"></div>
+          </form>
+        </div>
+        <footer class="foot">
+          Chưa có tài khoản? <a href="#">Đăng ký</a>
+        </footer>
+      </section>
+    </main>
+
+    <script>
+      // Toggle show/hide password
+      const togglePwd = document.getElementById('togglePwd');
+      const pwdInput = document.getElementById('password');
+      togglePwd.addEventListener('click', () => {
+        const isPwd = pwdInput.type === 'password';
+        pwdInput.type = isPwd ? 'text' : 'password';
+        togglePwd.setAttribute('aria-pressed', String(isPwd));
+      });
+
+      // Simple client-side validation feedback
+      const form = document.getElementById('login-form');
+      const email = document.getElementById('email');
+      const emailErr = document.getElementById('email-error');
+      const pwdErr = document.getElementById('pwd-error');
+      const msg = document.getElementById('form-msg');
+
+      function show(el, on) { el.style.display = on ? 'block' : 'none'; }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let valid = true;
+        if (!email.checkValidity()) { valid = false; show(emailErr, true); } else { show(emailErr, false); }
+        if (!pwdInput.checkValidity()) { valid = false; show(pwdErr, true); } else { show(pwdErr, false); }
+
+        if (valid) {
+          // Replace this with your real submit logic
+          msg.textContent = 'Đăng nhập thành công (demo). Thay thế bằng API của bạn!';
+          msg.style.color = getComputedStyle(document.documentElement).getPropertyValue('--success');
+          form.reset();
+        } else {
+          msg.textContent = 'Vui lòng kiểm tra lại thông tin.';
+          msg.style.color = getComputedStyle(document.documentElement).getPropertyValue('--error');
+        }
+      });
+    </script>
+  </body>
 </html>
